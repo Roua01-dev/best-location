@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Permet les connexions HTTP pour des domaines spécifiques -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">192.168.42.246</domain>
+    </domain-config>
+
+    <!-- Permet toutes les connexions HTTP non sécurisées (optionnel, non recommandé) -->
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
