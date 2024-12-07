@@ -43,6 +43,13 @@
             android:textColor="#757575"
             android:textSize="14sp"
             android:text="Address"/>
+        <ImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_delete" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

@@ -19,6 +19,7 @@ import com.example.bestlocation.Controller.VolleySingleton;
 import com.example.bestlocation.Model.Position;
 import com.example.bestlocation.Model.User;
 import com.example.bestlocation.Utils.Url;
+import com.example.bestlocation.View.AddPositionActivity;
 import com.example.bestlocation.View.LoginActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -55,11 +56,13 @@ import androidx.core.content.ContextCompat;
 //OnMarkerClickListener: pour gérer les clics sur les marqueurs.
 //OnMapLongClickListener: pour gérer les clics prolongés sur la carte
 //OnCameraIdleListener: pour détecter quand la caméra est immobile après un déplacement
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+public class MapsActivity extends FragmentActivity implements
+         OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener,
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnCameraIdleListener,
-        GoogleMap.OnMapClickListener {
+        GoogleMap.OnMapClickListener
+{
 
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -182,6 +185,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         checkLocationPermission();
         fetchData(); // Charger les données et ajouter des marqueurs
         mMap.setOnMapClickListener(this);
+        mMap.setOnMapLongClickListener(this);
 
 
     }
@@ -293,8 +297,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     @Override
-    public void onMapLongClick(@NonNull LatLng latLng) {
-
+    public void onMapLongClick(@NonNull LatLng latLng)
+    {
+        Intent intent = new Intent(MapsActivity.this, AddPositionActivity.class);
+        intent.putExtra("latitude",latLng.latitude);
+        intent.putExtra("longitude",latLng.longitude);
+        startActivity(intent);
     }
 
     @Override
@@ -362,7 +370,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Ajoutez un marqueur à l'endroit où l'utilisateur a cliqué
         Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
-                .title(userName)
+                .title("userName")
                 .snippet("Latitude: " + latLng.latitude + ", Longitude: " + latLng.longitude));
         marker.setTag("Some data related to the marker");
 

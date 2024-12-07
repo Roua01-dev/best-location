@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
+        Log.d("MainActivity", "Fetching data from: " + Url.ALL_DATA_URL);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Url.ALL_DATA_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -147,16 +148,17 @@ public class MainActivity extends AppCompatActivity {
                                 place.setLatitide(placeObj.getString("latitude"));
                                 place.setLongitude(placeObj.getString("longitude"));
                                 positionList.add(place);
+
+                                Log.d("MainActivity", "Position added: " + place.toString());
                             }
 
-                            // Notifier l'adaptateur des modifications
                             positionAdapter.notifyDataSetChanged();
-
                             Log.d("MainActivity", "Positions fetched: " + positionList.size());
                             Toast.makeText(MainActivity.this, "Data fetched successfully!", Toast.LENGTH_LONG).show();
                         } catch (JSONException e) {
                             Log.e("MainActivity", "JSON Exception: " + e.getMessage());
                             e.printStackTrace();
+                            Toast.makeText(MainActivity.this, "JSON Parsing Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -164,16 +166,21 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.dismiss();
-                        Log.e("MainActivity", "Error response: " + error.getMessage());
+                        if (error.networkResponse != null) {
+                            Log.e("MainActivity", "Error response code: " + error.networkResponse.statusCode);
+                            Log.e("MainActivity", "Error response data: " + new String(error.networkResponse.data));
+                        } else {
+                            Log.e("MainActivity", "Error response: " + error.getMessage());
+                        }
                         Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
-                // Définir les en-têtes requis
                 params.put("Accept", "application/json");
                 params.put("Authorization", "Bearer " + token);
+                Log.d("MainActivity", "Headers set: " + params);
                 return params;
             }
         };
